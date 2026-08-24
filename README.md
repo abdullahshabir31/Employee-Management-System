@@ -1,34 +1,38 @@
-# 👨‍💼 Employee Management System — Backend
+# 👨‍💼 Employee Management System
 
-The **Employee Management System** is a full-stack web application designed to manage employees, departments, projects, authentication, and employee-project relationships.
+A full-stack Employee Management System built with **React, FastAPI, PostgreSQL, SQLAlchemy, and Alembic**.
 
-This repository contains the backend API, built with **Python, FastAPI, PostgreSQL, SQLAlchemy, Alembic, and Pydantic**.
-
-The backend provides RESTful APIs that will be consumed by the React frontend.
+The project is designed to manage employees, departments, projects, authentication, and employee-project relationships while providing practical experience with complete full-stack application development.
 
 ---
 
 ## 📖 About
 
-The Employee Management System is designed to provide a centralized platform for managing company employees and organizational data.
+The Employee Management System provides a centralized platform for managing company employees and organizational data.
 
-The backend is responsible for:
+The application consists of three main parts:
 
-- User authentication
-- Employee management
-- Department management
-- Project management
-- Employee-project assignments
-- CRUD operations
-- Database relationships
-- Data validation
-- Authentication and authorization
-- REST API development
-- PostgreSQL database management
+- **Frontend** — React + Vite
+- **Backend** — Python + FastAPI
+- **Database** — PostgreSQL
+
+The React frontend communicates with the FastAPI backend through REST APIs, while the backend communicates with PostgreSQL using SQLAlchemy ORM.
+
+Alembic is used to manage database migrations.
 
 ---
 
 ## 🛠️ Tech Stack
+
+### Frontend
+
+- React
+- JavaScript
+- JSX
+- Vite
+- React Router
+- ESLint
+- CSS
 
 ### Backend
 
@@ -36,41 +40,36 @@ The backend is responsible for:
 - FastAPI
 - Uvicorn
 - Pydantic
+- SQLAlchemy
+- Alembic
 - python-dotenv
+- JWT Authentication
+- Password Hashing
 
 ### Database
 
 - PostgreSQL
-- SQLAlchemy ORM
-- Alembic
 
-### Authentication
+### Development Tools
 
-- JWT Authentication
-- Password Hashing
-
-### API Documentation
-
+- Git
+- GitHub
+- VS Code
 - Swagger UI
 - ReDoc
-
-### Frontend Integration
-
-- React
-- REST APIs
-- HTTP Requests
 
 ---
 
 ## ✨ Features
 
-### 👤 Authentication
+### 🔐 Authentication
 
 - User registration
 - User login
-- JWT-based authentication
-- Protected API routes
+- User logout
+- JWT authentication
 - Password hashing
+- Protected routes
 - Current authenticated user
 
 ### 👨‍💼 Employee Management
@@ -92,7 +91,7 @@ The backend is responsible for:
 - View department details
 - Update departments
 - Delete departments
-- Assign employees to departments
+- View department employees
 
 ### 📁 Project Management
 
@@ -102,11 +101,12 @@ The backend is responsible for:
 - Update projects
 - Delete projects
 - Assign employees to projects
+- Remove employees from projects
 - View employees working on projects
 
 ### 🔗 Database Relationships
 
-The backend implements relational database concepts including:
+The application uses relational database concepts including:
 
 - Primary Keys
 - Foreign Keys
@@ -115,20 +115,67 @@ The backend implements relational database concepts including:
 
 ### 🔍 Search & Filtering
 
-Employees can be searched and filtered using API query parameters such as:
+Employees can be searched and filtered using:
 
 - Employee name
+- Email
 - Department
 - Status
-- Email
 
 ---
 
-## 🗄️ Database
+## 🏗️ Application Architecture
 
-The application uses **PostgreSQL** as its relational database.
+```text
+                    USER
+                      │
+                      ▼
+               React Frontend
+                      │
+                      │ HTTP / REST API
+                      ▼
+               FastAPI Backend
+                      │
+                      ▼
+                SQLAlchemy ORM
+                      │
+                      ▼
+                PostgreSQL
+```
 
-Planned database tables:
+---
+
+## 🔄 Request Flow
+
+```text
+React Frontend
+      ↓
+HTTP Request
+      ↓
+FastAPI Router
+      ↓
+Pydantic Validation
+      ↓
+Authentication
+      ↓
+SQLAlchemy ORM
+      ↓
+PostgreSQL Database
+      ↓
+Database Result
+      ↓
+FastAPI Response
+      ↓
+React Frontend
+      ↓
+Updated UI
+```
+
+---
+
+## 🗄️ Database Structure
+
+The application will contain the following main tables:
 
 - Users
 - Employees
@@ -140,30 +187,172 @@ Planned database tables:
 
 One department can have multiple employees.
 
-Department → Employees  
-1 Department → Many Employees
+```text
+Department
+    │
+    │ 1
+    │
+    │ many
+    ▼
+Employees
+```
 
 ### Employees ↔ Projects
 
 An employee can work on multiple projects, and a project can have multiple employees.
 
-Employees ↔ Employee Projects ↔ Projects
+```text
+Employees
+    │
+    ▼
+Employee Projects
+    ▲
+    │
+Projects
+```
 
 The `employee_projects` table manages the many-to-many relationship between employees and projects.
 
 ---
 
-## 🔐 Authentication & Security
+## 🔐 Authentication Flow
 
-The backend uses **JWT-based authentication** to protect authenticated API routes.
+The application uses JWT-based authentication.
 
-Authentication flow:
+```text
+User
+  ↓
+Register / Login
+  ↓
+FastAPI
+  ↓
+Validate Credentials
+  ↓
+Hash / Verify Password
+  ↓
+Generate JWT Token
+  ↓
+React Frontend
+  ↓
+Protected API Requests
+```
 
-User → Register/Login → FastAPI → Validate Credentials → Generate JWT Token → React Frontend → Protected API
+Passwords are securely hashed before being stored in the database.
 
-Passwords will be securely hashed before being stored in the database.
+Sensitive configuration such as database credentials and secret keys is stored using environment variables.
 
-Sensitive configuration such as database credentials and secret keys will be stored using environment variables.
+---
+
+## 📂 Project Structure
+
+```text
+Employee Management System/
+│
+├── backend/
+│   │
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── employees.py
+│   │   ├── departments.py
+│   │   └── projects.py
+│   │
+│   ├── main.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── requirements.txt
+│   ├── .env
+│   ├── .gitignore
+│   └── README.md
+│
+├── frontend/
+│   │
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── layouts/
+│   │   ├── services/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   │
+│   ├── eslint.config.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   └── README.md
+│
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 📁 Backend
+
+The backend is responsible for:
+
+- REST API development
+- Authentication
+- Authorization
+- Business logic
+- Data validation
+- CRUD operations
+- Database operations
+- Database relationships
+- JWT authentication
+- Error handling
+
+Backend technologies:
+
+- Python
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Alembic
+- Pydantic
+
+Detailed backend documentation is available inside:
+
+`backend/README.md`
+
+---
+
+## ⚛️ Frontend
+
+The frontend is responsible for:
+
+- User interface
+- Navigation
+- Authentication pages
+- Dashboard
+- Employee management
+- Department management
+- Project management
+- Forms
+- Tables
+- Search
+- Filtering
+- API communication
+- Responsive design
+
+Frontend technologies:
+
+- React
+- JavaScript
+- Vite
+- React Router
+- ESLint
+- CSS
+
+Detailed frontend documentation is available inside:
+
+`frontend/README.md`
 
 ---
 
@@ -201,235 +390,86 @@ Sensitive configuration such as database credentials and secret keys will be sto
 
 ---
 
-## 📂 Project Structure
+## ⚙️ Backend Setup
 
-backend/
+Navigate to the backend directory:
 
-├── routers/  
-│ ├── **init**.py  
-│ ├── auth.py  
-│ ├── employees.py  
-│ ├── departments.py  
-│ └── projects.py  
-│  
-├── main.py  
-├── database.py  
-├── models.py  
-├── schemas.py  
-├── .env  
-├── .gitignore  
-├── requirements.txt  
-└── README.md
+```bash
+cd backend
+```
 
----
+Create a Python virtual environment:
 
-## 📄 Backend Files
+```bash
+python -m venv venv
+```
 
-### main.py
+Activate the virtual environment on Windows PowerShell:
 
-Main entry point of the FastAPI application.
+```powershell
+.\venv\Scripts\Activate.ps1
+```
 
-Responsibilities:
+Install dependencies:
 
-- Create FastAPI application
-- Register routers
-- Configure API
-- Provide application entry point
+```bash
+pip install -r requirements.txt
+```
 
-### database.py
+Create a `.env` file inside the backend directory:
 
-Responsible for connecting the FastAPI application with PostgreSQL through SQLAlchemy.
+```env
+DATABASE_URL=postgresql://username:password@localhost:5432/employee_management
+SECRET_KEY=your-secret-key
+```
 
-Responsibilities:
+Run database migrations:
 
-- Database engine
-- Database session
-- SQLAlchemy Base
-- Database dependency
+```bash
+alembic upgrade head
+```
 
-### models.py
+Start the FastAPI development server:
 
-Contains SQLAlchemy ORM models that represent database tables.
+```bash
+uvicorn main:app --reload
+```
 
-Planned models:
-
-- User
-- Employee
-- Department
-- Project
-- EmployeeProject
-
-### schemas.py
-
-Contains Pydantic schemas used for request and response validation.
-
-Responsibilities:
-
-- Validate incoming data
-- Define API request structures
-- Define API response structures
-- Validate employee data
-- Validate department data
-- Validate project data
-
-### routers/auth.py
-
-Contains authentication-related API endpoints.
-
-Responsibilities:
-
-- Registration
-- Login
-- JWT generation
-- Current user
-- Authentication validation
-
-### routers/employees.py
-
-Contains employee-related API endpoints.
-
-Responsibilities:
-
-- Employee CRUD
-- Employee search
-- Employee filtering
-- Employee details
-
-### routers/departments.py
-
-Contains department-related API endpoints.
-
-Responsibilities:
-
-- Department CRUD
-- Department employees
-- Department management
-
-### routers/projects.py
-
-Contains project-related API endpoints.
-
-Responsibilities:
-
-- Project CRUD
-- Employee-project assignments
-- Project employee management
-
----
-
-## 🔄 Backend Architecture
-
-React Frontend  
-↓  
-FastAPI Backend  
-↓  
-Pydantic Validation  
-↓  
-Authentication  
-↓  
-SQLAlchemy ORM  
-↓  
-PostgreSQL Database
-
----
-
-## 🔄 Request Flow
-
-React Frontend  
-↓  
-HTTP Request  
-↓  
-FastAPI Router  
-↓  
-Pydantic Validation  
-↓  
-Authentication  
-↓  
-SQLAlchemy  
-↓  
-PostgreSQL  
-↓  
-Database Result  
-↓  
-FastAPI Response  
-↓  
-React Frontend
-
----
-
-## 🔄 Database Migration
-
-**Alembic** will be used to manage database schema changes.
-
-Migration workflow:
-
-SQLAlchemy Models → Alembic Migration → PostgreSQL Database
-
-Common commands:
-
-- `alembic revision --autogenerate -m "create initial tables"`
-- `alembic upgrade head`
-
----
-
-## ⚙️ Local Development
-
-### 1. Clone Repository
-
-`git clone YOUR_GITHUB_REPOSITORY_URL`
-
-`cd employee-management-system`
-
-`cd backend`
-
-### 2. Create Virtual Environment
-
-`python -m venv venv`
-
-### 3. Activate Virtual Environment
-
-Windows PowerShell:
-
-`.\venv\Scripts\Activate.ps1`
-
-### 4. Install Dependencies
-
-`pip install -r requirements.txt`
-
-### 5. Configure Environment Variables
-
-Create a `.env` file in the backend directory.
-
-Required variables:
-
-- `DATABASE_URL`
-- `SECRET_KEY`
-
-Example:
-
-`DATABASE_URL=postgresql://username:password@localhost:5432/employee_management`
-
-`SECRET_KEY=your-secret-key`
-
-Never commit the `.env` file to GitHub.
-
-### 6. Run Database Migrations
-
-`alembic upgrade head`
-
-### 7. Start Development Server
-
-`uvicorn main:app --reload`
-
-The backend will run at:
+Backend server:
 
 `http://127.0.0.1:8000`
 
 ---
 
+## ⚛️ Frontend Setup
+
+Navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Frontend server:
+
+`http://localhost:5173`
+
+---
+
 ## 📚 API Documentation
 
-FastAPI automatically generates interactive API documentation.
+FastAPI automatically provides interactive API documentation.
 
 ### Swagger UI
 
@@ -439,27 +479,93 @@ FastAPI automatically generates interactive API documentation.
 
 `http://127.0.0.1:8000/redoc`
 
-Swagger UI can be used to test API endpoints during development.
+Swagger UI can be used to test backend API endpoints during development.
+
+---
+
+## 🔄 Database Migrations
+
+Alembic is used to manage PostgreSQL database schema changes.
+
+Migration workflow:
+
+```text
+SQLAlchemy Models
+      ↓
+Alembic Migration
+      ↓
+PostgreSQL Database
+```
+
+Create a migration:
+
+```bash
+alembic revision --autogenerate -m "create initial tables"
+```
+
+Apply migrations:
+
+```bash
+alembic upgrade head
+```
+
+Rollback the latest migration:
+
+```bash
+alembic downgrade -1
+```
 
 ---
 
 ## 🔒 Security
 
-Sensitive credentials are stored using environment variables.
+Sensitive information must never be committed to GitHub.
 
-The following information should never be committed to GitHub:
+The following information should remain inside environment variables:
 
 - Database password
 - Database credentials
 - JWT secret key
 - Private API keys
-- Environment configuration
+- Other sensitive configuration
 
-The `.env` file is excluded from version control through `.gitignore`.
+The `.env` file must be included in `.gitignore`.
 
-Passwords will be hashed before being stored in the database.
+Passwords are hashed before being stored in the database.
 
-Protected routes will require valid JWT authentication.
+Protected API routes require valid JWT authentication.
+
+The frontend never connects directly to PostgreSQL.
+
+Correct architecture:
+
+```text
+React
+  ↓
+FastAPI
+  ↓
+SQLAlchemy
+  ↓
+PostgreSQL
+```
+
+---
+
+## 🧪 Testing
+
+The project will include testing for:
+
+- User registration
+- User login
+- JWT authentication
+- Employee CRUD
+- Department CRUD
+- Project CRUD
+- Database relationships
+- Protected routes
+- API validation
+- Error handling
+- Frontend API integration
 
 ---
 
@@ -470,7 +576,11 @@ Protected routes will require valid JWT authentication.
 - Create project structure
 - Initialize Git repository
 - Create GitHub repository
-- Configure virtual environment
+- Create backend
+- Create frontend
+- Configure Python virtual environment
+- Configure React + Vite
+- Configure ESLint
 
 ### Phase 2 — PostgreSQL Setup
 
@@ -478,37 +588,44 @@ Protected routes will require valid JWT authentication.
 - Configure database URL
 - Connect FastAPI with PostgreSQL
 
-### Phase 3 — SQLAlchemy Configuration
+### Phase 3 — SQLAlchemy
 
-- Create engine
-- Create session
-- Create Base
+- Create database engine
+- Create database session
+- Create SQLAlchemy Base
 - Configure database dependency
+- Create ORM models
 
-### Phase 4 — Alembic Configuration
+### Phase 4 — Alembic
 
 - Initialize Alembic
+- Configure Alembic
 - Connect Alembic with SQLAlchemy
 - Create migrations
 - Apply migrations
 
 ### Phase 5 — Database Models
 
-- Create User model
-- Create Department model
-- Create Employee model
-- Create Project model
-- Create EmployeeProject model
-- Configure relationships
+- User model
+- Employee model
+- Department model
+- Project model
+- EmployeeProject model
+- Primary keys
+- Foreign keys
+- Relationships
 
 ### Phase 6 — Pydantic Schemas
 
-- Create request schemas
-- Create response schemas
-- Add validation
-- Configure model serialization
+- Request schemas
+- Response schemas
+- Data validation
+- Employee schemas
+- Department schemas
+- Project schemas
+- User schemas
 
-### Phase 7 — Authentication & JWT
+### Phase 7 — Authentication
 
 - User registration
 - Password hashing
@@ -516,135 +633,179 @@ Protected routes will require valid JWT authentication.
 - JWT generation
 - JWT verification
 - Protected routes
+- Current user
 
-### Phase 8 — Employee CRUD
+### Phase 8 — Employee Management
 
 - Create employee
 - Get employees
 - Get employee by ID
 - Update employee
 - Delete employee
+- Search employees
+- Filter employees
 
-### Phase 9 — Department CRUD
+### Phase 9 — Department Management
 
 - Create department
 - Get departments
 - Get department by ID
 - Update department
 - Delete department
+- Get department employees
 
-### Phase 10 — Project CRUD
+### Phase 10 — Project Management
 
 - Create project
 - Get projects
 - Get project by ID
 - Update project
 - Delete project
+- Assign employees
+- Remove employees
 
-### Phase 11 — Database Relationships
+### Phase 11 — Frontend
 
-- Department and Employee relationship
-- Employee and Project relationship
-- EmployeeProject association table
-- Relationship queries
+- Login page
+- Register page
+- Dashboard
+- Employees page
+- Departments page
+- Projects page
+- Employee details
+- Forms
+- Tables
+- Protected routes
 
-### Phase 12 — Search & Filtering
-
-- Search employees
-- Filter by department
-- Filter by status
-- Filter by other fields
-
-### Phase 13 — API Testing
-
-- Test APIs with Swagger
-- Test successful requests
-- Test validation errors
-- Test authentication
-- Test database operations
-
-### Phase 14 — Error Handling
-
-- HTTP exceptions
-- Validation errors
-- Authentication errors
-- Database errors
-- Proper API responses
-
-### Phase 15 — React Frontend Integration
+### Phase 12 — Integration
 
 - Connect React with FastAPI
 - Authentication integration
 - Employee API integration
 - Department API integration
 - Project API integration
+- Loading states
+- Error handling
+- Form validation
 
-### Phase 16 — Deployment
+### Phase 13 — Testing
+
+- Test authentication
+- Test CRUD APIs
+- Test database relationships
+- Test protected routes
+- Test frontend
+- Fix bugs
+
+### Phase 14 — Deployment
 
 - Prepare production configuration
+- Deploy frontend
 - Deploy backend
-- Configure production database
-- Connect frontend with deployed backend
+- Configure PostgreSQL
+- Configure environment variables
+- Configure CORS
+- Connect frontend with backend
 
 ---
 
-## 🎯 Project Goals
+## 🎯 Learning Objectives
 
-The main goal of this project is to build a complete real-world full-stack application while understanding how the frontend, backend, API, and database work together.
+This project is designed to provide practical experience with:
 
-The project will provide practical experience with:
-
+- React
+- JavaScript
 - FastAPI
-- REST APIs
+- Python
 - PostgreSQL
-- SQLAlchemy ORM
+- SQLAlchemy
 - Alembic
-- Pydantic
+- REST APIs
 - JWT Authentication
 - Password Hashing
 - CRUD Operations
 - Primary Keys
 - Foreign Keys
-- Database Relationships
-- API Validation
-- Error Handling
+- One-to-Many Relationships
+- Many-to-Many Relationships
+- Pydantic Validation
+- API Error Handling
 - React API Integration
-- Git & GitHub
+- Git
+- GitHub
 - Full-Stack Architecture
 
 ---
 
-## 🔗 Frontend Integration
+## 🔗 Full-Stack Integration
 
-The backend will be connected with a React frontend.
+The final application will follow this architecture:
 
-React Frontend  
-↓  
-REST API  
-↓  
-FastAPI Backend  
-↓  
-SQLAlchemy  
-↓  
+```text
+React Frontend
+      ↓
+REST API
+      ↓
+FastAPI Backend
+      ↓
+Pydantic Validation
+      ↓
+SQLAlchemy ORM
+      ↓
 PostgreSQL Database
+```
 
-The React application will communicate with the FastAPI backend through HTTP requests.
+The frontend and backend are maintained separately inside the same project repository.
 
 ---
 
-## 🚀 Future Deployment
+## 🚀 Deployment Architecture
 
-The application is planned to use separate services for the frontend, backend, and database.
-
-React Frontend  
-↓  
-Frontend Hosting  
-↓  
-FastAPI Backend  
-↓  
-Backend Hosting  
-↓  
+```text
+React Frontend
+      ↓
+Frontend Hosting
+      ↓
+FastAPI Backend
+      ↓
+Backend Hosting
+      ↓
 PostgreSQL Database
+```
+
+---
+
+## 📌 Project Status
+
+🚧 **Currently under development**
+
+The project is being developed step-by-step, starting with the backend and database and then integrating the React frontend.
+
+Current development order:
+
+```text
+Project Setup
+     ↓
+PostgreSQL Setup
+     ↓
+SQLAlchemy
+     ↓
+Alembic
+     ↓
+Database Models
+     ↓
+FastAPI APIs
+     ↓
+Authentication
+     ↓
+React Frontend
+     ↓
+Frontend + Backend Integration
+     ↓
+Testing
+     ↓
+Deployment
+```
 
 ---
 
@@ -656,11 +817,9 @@ Full-Stack Developer and Computer Science Student.
 
 ---
 
-## ⭐ Project Status
+## ⭐ Support
 
-🚧 **Currently under development**
-
-The backend is being developed step-by-step while implementing and learning real-world full-stack development concepts.
+If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
 
 ---
 
