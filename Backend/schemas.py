@@ -16,7 +16,7 @@ class UserResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
+#--------------------------------------------------
 
 class DepartmentCreate(BaseModel):
     name: str
@@ -37,7 +37,7 @@ class DepartmentResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
+#--------------------------------------------------
 
 class EmployeeCreate(BaseModel):
     department_id: int
@@ -79,7 +79,7 @@ class EmployeeResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
+#--------------------------------------------------
 
 class ProjectCreate(BaseModel):
     name: str
@@ -109,7 +109,7 @@ class ProjectResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
+#--------------------------------------------------
 
 class EmployeeProjectCreate(BaseModel):
     employee_id: int
