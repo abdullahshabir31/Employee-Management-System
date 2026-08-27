@@ -1,5 +1,4 @@
 from datetime import date, datetime
-
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 
@@ -26,6 +25,10 @@ class DepartmentCreate(BaseModel):
 class DepartmentUpdate(BaseModel):
     name: str | None = None
     description: str | None = None
+
+
+class PartialDepartmentUpdate(BaseModel):
+    name: str | None = None
 
 
 class DepartmentResponse(BaseModel):
