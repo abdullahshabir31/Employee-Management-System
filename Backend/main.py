@@ -1,15 +1,18 @@
 from fastapi import FastAPI
 from sqlalchemy import text
-
 from database import engine
+from routers.departments import router as departments_router
+from routers.employees import router as employees_router
+
 
 app = FastAPI()
+app.include_router(departments_router)
+app.include_router(employees_router)
 
 
 @app.get("/")
 def root():
     return {"message": "Employee Management System API is running"}
-
 
 @app.get("/test-db")
 def test_db():
