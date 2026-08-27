@@ -1,5 +1,4 @@
 from datetime import date, datetime
-
 from sqlalchemy import (
     Boolean,
     Date,
@@ -10,7 +9,6 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from database import Base
 
 
