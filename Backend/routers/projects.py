@@ -1,18 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Project
+from models import Project, User
 from schemas import (
     ProjectCreate,
     ProjectResponse,
     ProjectUpdate,
 )
+from routers.auth import get_current_user
 
-router = APIRouter()
+
+router = APIRouter(
+    dependencies=[Depends(get_current_user)]
+)
+
 
 @router.post("/projects",
-             tags=["Projects"],
-             response_model=ProjectResponse
+    tags=["Projects"],
+    response_model=ProjectResponse
 )
 def create_project(
     project: ProjectCreate,
@@ -34,8 +39,8 @@ def create_project(
 
 
 @router.get("/projects",
-            tags=["Projects"],
-            response_model=list[ProjectResponse]
+    tags=["Projects"],
+    response_model=list[ProjectResponse]
 )
 def get_projects(
     db: Session = Depends(get_db)
@@ -46,8 +51,8 @@ def get_projects(
 
 
 @router.get("/projects/{project_id}",
-            tags=["Projects"],
-            response_model=ProjectResponse
+    tags=["Projects"],
+    response_model=ProjectResponse
 )
 def get_project(
     project_id: int,
@@ -62,8 +67,8 @@ def get_project(
 
 
 @router.put("/projects/{project_id}",
-            tags=["Projects"],
-            response_model=ProjectResponse
+    tags=["Projects"],
+    response_model=ProjectResponse
 )
 def update_project(
     project_id: int,
@@ -88,7 +93,7 @@ def update_project(
 
 
 @router.delete("/projects/{project_id}",
-            tags=["Projects"],
+    tags=["Projects"],
 )
 def delete_project(
     project_id: int,
