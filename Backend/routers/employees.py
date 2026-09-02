@@ -1,18 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Employee
+from models import Employee, User
 from schemas import (
     EmployeeCreate,
     EmployeeResponse,
     EmployeeUpdate,
 )
+from routers.auth import get_current_user
 
-router = APIRouter()
+
+router = APIRouter(
+     dependencies=[Depends(get_current_user)],
+)
+
 
 @router.post("/employees",
-              tags=["Employees"],
-              response_model=EmployeeResponse
+    tags=["Employees"],
+    response_model=EmployeeResponse
 )
 def create_employee(
     employee: EmployeeCreate,
@@ -38,8 +43,8 @@ def create_employee(
 
 
 @router.get("/employees",
-            tags=["Employees"],
-            response_model=list[EmployeeResponse]
+    tags=["Employees"],
+    response_model=list[EmployeeResponse]
 )
 def get_employees(
     db: Session = Depends(get_db)
@@ -50,8 +55,8 @@ def get_employees(
 
 
 @router.get("/employees/{employee_id}",
-            tags=["Employees"],
-            response_model=EmployeeResponse
+    tags=["Employees"],
+    response_model=EmployeeResponse
 )
 def get_employee(
     employee_id: int,
@@ -66,8 +71,8 @@ def get_employee(
 
 
 @router.put("/employees/{employee_id}",
-            tags=["Employees"],
-            response_model=EmployeeResponse
+    tags=["Employees"],
+    response_model=EmployeeResponse
 )
 def update_employee(
     employee_id: int,
@@ -96,7 +101,7 @@ def update_employee(
 
 
 @router.delete("/employee/{employee_id}",
-               tags=["Employees"],
+    tags=["Employees"],
 )
 def delete_employee(
     employee_id: int,
