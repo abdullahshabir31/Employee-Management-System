@@ -1,21 +1,24 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Department
+from models import Department, User
 from schemas import ( 
     DepartmentCreate, 
     DepartmentResponse, 
     DepartmentUpdate, 
     PartialDepartmentUpdate
 )
+from routers.auth import get_current_user
 
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.post("/departments",
-              tags=["Departments"], 
-              response_model=DepartmentResponse
+    tags=["Departments"], 
+    response_model=DepartmentResponse
 )
 def create_department(
     department: DepartmentCreate,
@@ -34,8 +37,8 @@ def create_department(
 
 
 @router.get("/departments",
-            tags=["Departments"],
-            response_model=list[DepartmentResponse]
+    tags=["Departments"],
+    response_model=list[DepartmentResponse]
 )
 def get_departments(
     db: Session = Depends(get_db)
@@ -46,8 +49,8 @@ def get_departments(
 
 
 @router.get("/departemnts/{department_id}",
-            tags=["Departments"],
-            response_model=DepartmentResponse
+    tags=["Departments"],
+    response_model=DepartmentResponse
 )
 def get_department(
     department_id: int,
@@ -59,8 +62,8 @@ def get_department(
 
 
 @router.put("/departments/{department_id}",
-            tags=["Departments"],
-            response_model=DepartmentResponse
+    tags=["Departments"],
+    response_model=DepartmentResponse
 )
 def update_department(
     department_id: int,
@@ -88,8 +91,8 @@ def update_department(
 
 
 @router.patch("/departments/{department_id}",
-              tags=["Departments"],
-              response_model=DepartmentResponse
+    tags=["Departments"],
+    response_model=DepartmentResponse
 )
 def partial_update_department(
     department_id: int,
@@ -114,7 +117,7 @@ def partial_update_department(
 
 
 @router.delete("/departments/{department_id}",
-               tags=["Departments"]
+    tags=["Departments"]
 )
 def delete_department(
     department_id: int,
