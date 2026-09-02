@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from database import get_db
@@ -43,9 +43,7 @@ def register(
     db: Session = Depends(get_db),
 ):
     existing_user = (
-        db.query(User)
-        .filter(User.email == user.email)
-        .first()
+        db.query(User).filter(User.email == user.email).first()
     )
 
     if existing_user:
@@ -70,16 +68,14 @@ def register(
 
 # Login
 
-@router.post("/login",
-    response_model=Token,
-)
+@router.post("/login", response_model=Token)
 def login(
-    user: UserLogin,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
     existing_user = (
         db.query(User)
-        .filter(User.email == user.email)
+        .filter(User.email == form_data.username)
         .first()
     )
 
@@ -90,7 +86,7 @@ def login(
         )
 
     password_valid = verify_password(
-        user.password,
+        form_data.password,
         existing_user.password_hash,
     )
 
