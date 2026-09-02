@@ -1,19 +1,22 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Employee, EmployeeProject, Project
+from models import Employee, EmployeeProject, Project, User
 from schemas import (
     EmployeeProjectCreate,
     EmployeeProjectResponse,
 )
+from routers.auth import get_current_user
 
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.post("/employee-project",
-             tags=["Employee Projects"], 
-             response_model=EmployeeProjectResponse
+    tags=["Employee Projects"], 
+    response_model=EmployeeProjectResponse
 )
 def assign_employee_to_project(
     assignment: EmployeeProjectCreate,
@@ -64,8 +67,8 @@ def assign_employee_to_project(
 
 
 @router.get("/employee-projects",
-            tags=["Employee Projects"], 
-            response_model=list[EmployeeProjectResponse]
+    tags=["Employee Projects"], 
+    response_model=list[EmployeeProjectResponse]
 )
 def get_employee_projects(
     db: Session = Depends(get_db),
@@ -76,8 +79,8 @@ def get_employee_projects(
 
 
 @router.get("/employee-project/{assignment_id}",
-            tags=["Employee Projects"], 
-            response_model=EmployeeProjectResponse
+    tags=["Employee Projects"], 
+    response_model=EmployeeProjectResponse
 )
 def get_employee_project(
     assignment_id: int,
@@ -99,7 +102,7 @@ def get_employee_project(
 
 
 @router.delete("/employee-project/{assignment_id}",
-               tags=["Employee Projects"],
+    tags=["Employee Projects"],
 )
 def delete_employee_project(
     assignment_id: int,
@@ -128,8 +131,7 @@ def delete_employee_project(
 # Projects of an Employee
 
 
-@router.get(
-    "/employee/{employee_id}/projects",
+@router.get("/employee/{employee_id}/projects",
     tags=["Employee Projects"],
     response_model=list[EmployeeProjectResponse],
 )
@@ -161,8 +163,7 @@ def get_employee_projects_by_employee(
 # Employees of a Project
 
 
-@router.get(
-    "/project/{project_id}/employees",
+@router.get("/project/{project_id}/employees",
     tags=["Employee Projects"],
     response_model=list[EmployeeProjectResponse],
 )
