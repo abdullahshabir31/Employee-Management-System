@@ -161,6 +161,7 @@ class Employee(Base):
     cascade="all, delete-orphan",
     )
 
+
 class Project(Base):
     __tablename__ = "projects"
 
