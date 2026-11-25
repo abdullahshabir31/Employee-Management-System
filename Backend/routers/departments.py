@@ -58,6 +58,12 @@ def get_department(
 ):
     department = db.query(Department).filter(Department.id == department_id).first()
 
+    if not department:
+            raise HTTPException(
+                status_code=404, 
+                detail="Department not found"
+            )
+
     return department
 
 
